@@ -14,47 +14,51 @@ export class Ihm {
         this.retourVehicule = retourVehicule
     }
 
-    ajoutVehicule() {
+    demarrer() {
         this.formulaire.addEventListener('submit', (e) => {
-            const immatriculation = document.querySelector("input[name='immatriculation']").value
-            let exist = false;
             e.preventDefault();
-            this.verificationVehicule(immatriculation, exist);
+            const input = document.querySelector("input[name='immatriculation']").value
+            const exist = this.verificationVehicule(input);
 
-            console.log(exist)
-            if(exist == true) {
-                return message.textContent = "Le véhicule existe déjà"
-            } 
-            else if (this.exist == false){
+        this.ajoutVehicule(exist);
+        })
+    }
+
+    ajoutVehicule(exist) {
+
+        if(exist == true) {
+            return message.textContent = "Le véhicule existe déjà"
+        } 
+        else if (exist == false){
             const heureDepot = new Date();
             const message = document.querySelector('#message')
             const vehicule = new Vehicule(immatriculation, heureDepot)
             this.vehicule.push(vehicule)
-
-            message.textContent = "Véhicule enregistré"
-
-            setTimeout(() => {
-                message.textContent = ""
-            },5000)
-
             console.log(this.vehicule)
-    }})
+            return message.textContent = "Véhicule enregistré"
+            
+        }
     }
 
+
+    
+
+    verificationVehicule(immatriculationInput) {
+
+        for (const i of this.vehicule) {
+            if (i.immatriculation === immatriculationInput) {
+                return true;
+            }
+        }
+            return false;
+        }
+    
     retraitVehicule() {
         this.retourVehicule.addEventListener('click', (e) => {
             e.preventDefault();
+
+
         })
     }
-
-    verificationVehicule(immatriculationInput, exist) {
-
-            this.vehicule.forEach(i => {
-                if(i.immatriculation == immatriculationInput) {
-                    return exist = true
-                } else if (i.immatriculation != immatriculationInput) {
-                    return exist = false
-                }
-            });
-    }
 }
+
